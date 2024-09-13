@@ -10,7 +10,7 @@ import { map, Observable, tap } from 'rxjs'; // Operadores do RxJS para manipula
 export class PokeApiService {
   // URL base para a API de Pokémon com um limite de 6 pokémons
   private apiUrl: string =
-    'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=200';
+    'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20';
 
   // Construtor que injeta o serviço HttpClient para realizar requisições HTTP
   constructor(private http: HttpClient) {}
