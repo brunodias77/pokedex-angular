@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
+import { Pokemon, PokemonList } from '../models/types';
 
 @Injectable({
   providedIn: 'root',
@@ -11,36 +12,20 @@ export class PokeApiService {
 
   constructor(private http: HttpClient) {}
 
-  getPokemons(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+  get apiListAllPokemons(): Observable<any> {
+    return this.http.get<PokemonList>(this.apiUrl).pipe(
+      tap((res) => res),
+      tap((res) => {
+        res.results.map((resPokemons: any) => {
+          this.apiGetPokemon(resPokemons.url).subscribe(
+            (res) => (resPokemons.status = res)
+          );
+        });
+      })
+    );
+  }
+
+  public apiGetPokemon(url: string): Observable<any> {
+    return this.http.get<Pokemon>(url).pipe(map((res) => res));
   }
 }
-
-// import { HttpClient } from '@angular/common/http';
-// import { Injectable } from '@angular/core';
-// import { map, Observable, tap } from 'rxjs';
-
-// @Injectable({
-//   providedIn: 'root',
-// })
-// export class PokeApiService {
-//   private url: string = 'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=100';
-//   constructor(private http: HttpClient) {}
-
-//   get apiListAllPokemons(): Observable<any> {
-//     return this.http.get<any>(this.url).pipe(
-//       tap((res) => res),
-//       tap((res) => {
-//         res.results.map((resPokemons: any) => {
-//           this.apiGetPokemon(resPokemons.url).subscribe(
-//             (res) => (resPokemons.status = res)
-//           );
-//         });
-//       })
-//     );
-//   }
-
-//   public apiGetPokemon(url: string): Observable<any> {
-//     return this.http.get<any>(url).pipe(map((res) => res));
-//   }
-// }
