@@ -16,11 +16,12 @@ export class CardComponent {
     const typeData = POKEMON_TYPES.find((t) => t.type === type);
     return typeData ? typeData.data.color : '#000'; // Cor padrão se não encontrado
   }
-
-  getTypeData(type: string): string {
+  getIconForType(type: string): string {
     const typeData = POKEMON_TYPES.find((t) => t.type === type);
-    console.log(typeData);
-    console.log(type);
-    return typeData ? typeData.data.color : '#000'; // Cor padrão e ícone vazio se não encontrado
+    return typeData ? typeData.data.icon : ''; // Ícone padrão se não encontrado
+  }
+  getColorAndIconForType(type: string): any {
+    const typeData = POKEMON_TYPES.find((t) => t.type === type);
+    return typeData ? typeData : ''; // Ícone padrão se não encontrado
   }
 }

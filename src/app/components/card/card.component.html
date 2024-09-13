@@ -1,5 +1,5 @@
 <div
-  class="flex gap-2 w-[280px] h-[120px] bg-white shadow-md rounded-[20px] cursor-pointer border-2 border-transparent hover:border-[#EF3E33] box-border hover:-translate-y-1 hover:transition-all hover:duration-200"
+  class="flex gap-2 w-[310px] h-[120px] bg-white shadow-md rounded-[20px] cursor-pointer border-2 border-transparent hover:border-[#EF3E33] box-border hover:-translate-y-1 hover:transition-all hover:duration-200"
 >
   <div
     [ngClass]="{
@@ -17,7 +17,9 @@
       'bg-dark': pokemon.status.types[0].type.name === 'dark',
       'bg-rock': pokemon.status.types[0].type.name === 'rock',
       'bg-psychic': pokemon.status.types[0].type.name === 'psychic',
-      'bg-flying': pokemon.status.types[0].type.name === 'flying'
+      'bg-flying': pokemon.status.types[0].type.name === 'flying',
+      'bg-poison': pokemon.status.types[0].type.name === 'poison',
+      'bg-ground': pokemon.status.types[0].type.name === 'ground'
     }"
     class="w-[132px] h-[93px] rounded-[20px_0px_50px_0px] relative bg-opacity-50"
   >
@@ -37,7 +39,11 @@
         'bg-dark': pokemon.status.types[0].type.name === 'dark',
         'bg-rock': pokemon.status.types[0].type.name === 'rock',
         'bg-psychic': pokemon.status.types[0].type.name === 'psychic',
-        'bg-flying': pokemon.status.types[0].type.name === 'flying'
+        'bg-flying': pokemon.status.types[0].type.name === 'flying',
+        'bg-poison': pokemon.status.types[0].type.name === 'poison',
+        'bg-ground': pokemon.status.types[0].type.name === 'ground',
+        'bg-steel': pokemon.status.types[0].type.name === 'ground'
+
       }"
       class="w-[122px] h-[83px] rounded-[20px_0px_40px_0px] bg-opacity-50"
     >
@@ -54,14 +60,24 @@
       <span class="text-gray-300">#0{{ pokemon.status.id }}</span>
       <img src="assets/pokeball-gray.svg" alt="" />
     </div>
-    <span class="font-bold text-[#424242] uppercase">{{ pokemon.name }}</span>
-    <div class="flex items-center justify-between gap-1">
-      <span
-        class="py-1 px-3 rounded-2xl text-white"
-        [ngStyle]="{ 'background-color': getTypeData(pokemonType.type.name) }"
+    <span class="text-center text-lg font-bold text-[#424242] uppercase">{{
+      pokemon.name
+    }}</span>
+    <div class="flex gap-2">
+      <div
         *ngFor="let pokemonType of pokemon.status.types"
-        >{{ pokemonType.type.name }}</span
+        class="flex items-center justify-center gap-1 py-1 px-3 rounded-2xl text-white"
+        [ngStyle]="{
+          'background-color': getColorForType(pokemonType.type.name)
+        }"
       >
+        <img
+          [src]="'assets/icons/' + pokemonType.type.name + '.svg'"
+          [alt]="pokemonType.type.name"
+          class="w-4 h-4"
+        />
+        <span>{{ pokemonType.type.name }}</span>
+      </div>
     </div>
   </div>
 </div>
