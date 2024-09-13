@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 // @import "./config-scss/reset.scss";
-@import "./config-scss/variables.scss";
-@import "./config-scss/rem-calc.scss";
-@import "./config-scss/btn.scss";
-@import "./config-scss/animation.scss";
+// @import "./config-scss/variables.scss";
+// @import "./config-scss/rem-calc.scss";
+// @import "./config-scss/btn.scss";
+// @import "./config-scss/animation.scss";
 
 * {
   margin: 0;
@@ -13,6 +13,6 @@
   box-sizing: border-box;
 }
 html {
-  font-family: "Roboto", sans-serif;
+  font-family: "Abel", sans-serif;
   background: var(--primary-color);
 }
