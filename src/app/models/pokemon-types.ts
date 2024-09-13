@@ -1,3 +1,17 @@
-export const PokemonTypes = [
+export const POKEMON_TYPES = [
   { type: 'fire', data: { color: '#F08030', icon: 'assets/icons/fire.svg' } },
+  { type: 'water', data: { color: '#5090D6', icon: 'assets/icons/fire.svg' } },
+  { type: 'dragon', data: { color: '#0B6DC3', icon: 'assets/icons/fire.svg' } },
+  { type: 'eltric', data: { color: '#F4D23C', icon: 'assets/icons/fire.svg' } },
+  { type: 'fair', data: { color: '#EC8FE6', icon: 'assets/icons/fire.svg' } },
+  { type: 'ghost', data: { color: '#5269AD', icon: 'assets/icons/fire.svg' } },
+  { type: 'ice', data: { color: '#73CEC0', icon: 'assets/icons/fire.svg' } },
+  { type: 'grass', data: { color: '#63BC5A', icon: 'assets/icons/fire.svg' } },
+  { type: 'bug', data: { color: '#91C12F', icon: 'assets/icons/fire.svg' } },
+  { type: 'fighting', data: { color: '#CE416B', icon: 'assets/icons/fire.svg' } },
+  { type: 'normal', data: { color: '#919AA2', icon: 'assets/icons/fire.svg' } },
+  { type: 'dark', data: { color: '#5A5465', icon: 'assets/icons/fire.svg' } },
+  { type: 'rock', data: { color: '#C5B78C', icon: 'assets/icons/fire.svg' } },
+  { type: 'psychic', data: { color: '#FA7179', icon: 'assets/icons/fire.svg' } },
+  { type: 'flying', data: { color: '#89AAE3', icon: 'assets/icons/fire.svg' } },
 ];

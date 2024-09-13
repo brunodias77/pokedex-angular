@@ -1,22 +1,68 @@
 <div
-  class="flex gap-4 w-[275px] h-[100px] bg-white shadow-md rounded-[20px] cursor-pointer border-2 border-transparent hover:border-[#EF3E33] box-border hover:-translate-y-1 hover:transition-all hover:duration-200"
+  class="flex gap-2 w-[280px] h-[120px] bg-white shadow-md rounded-[20px] cursor-pointer border-2 border-transparent hover:border-[#EF3E33] box-border hover:-translate-y-1 hover:transition-all hover:duration-200"
 >
   <div
-    class="bg-green-400 w-[122px] h-[83px] rounded-[20px_0px_50px_0px] bg-opacity-50 relative"
+    [ngClass]="{
+      'bg-fire': pokemon.status.types[0].type.name === 'fire',
+      'bg-water': pokemon.status.types[0].type.name === 'water',
+      'bg-dragon': pokemon.status.types[0].type.name === 'dragon',
+      'bg-electric': pokemon.status.types[0].type.name === 'electric',
+      'bg-fairy': pokemon.status.types[0].type.name === 'fairy',
+      'bg-ghost': pokemon.status.types[0].type.name === 'ghost',
+      'bg-ice': pokemon.status.types[0].type.name === 'ice',
+      'bg-grass': pokemon.status.types[0].type.name === 'grass',
+      'bg-bug': pokemon.status.types[0].type.name === 'bug',
+      'bg-fighting': pokemon.status.types[0].type.name === 'fighting',
+      'bg-normal': pokemon.status.types[0].type.name === 'normal',
+      'bg-dark': pokemon.status.types[0].type.name === 'dark',
+      'bg-rock': pokemon.status.types[0].type.name === 'rock',
+      'bg-psychic': pokemon.status.types[0].type.name === 'psychic',
+      'bg-flying': pokemon.status.types[0].type.name === 'flying'
+    }"
+    class="w-[132px] h-[93px] rounded-[20px_0px_50px_0px] relative bg-opacity-50"
   >
     <div
-      class="bg-green-400 w-[112px] h-[73px] rounded-[20px_0px_40px_0px] bg-opacity-50"
+      [ngClass]="{
+        'bg-fire': pokemon.status.types[0].type.name === 'fire',
+        'bg-water': pokemon.status.types[0].type.name === 'water',
+        'bg-dragon': pokemon.status.types[0].type.name === 'dragon',
+        'bg-electric': pokemon.status.types[0].type.name === 'electric',
+        'bg-fairy': pokemon.status.types[0].type.name === 'fairy',
+        'bg-ghost': pokemon.status.types[0].type.name === 'ghost',
+        'bg-ice': pokemon.status.types[0].type.name === 'ice',
+        'bg-grass': pokemon.status.types[0].type.name === 'grass',
+        'bg-bug': pokemon.status.types[0].type.name === 'bug',
+        'bg-fighting': pokemon.status.types[0].type.name === 'fighting',
+        'bg-normal': pokemon.status.types[0].type.name === 'normal',
+        'bg-dark': pokemon.status.types[0].type.name === 'dark',
+        'bg-rock': pokemon.status.types[0].type.name === 'rock',
+        'bg-psychic': pokemon.status.types[0].type.name === 'psychic',
+        'bg-flying': pokemon.status.types[0].type.name === 'flying'
+      }"
+      class="w-[122px] h-[83px] rounded-[20px_0px_40px_0px] bg-opacity-50"
     >
       <img
         [src]="pokemon.status.sprites.other['official-artwork'].front_default"
         [alt]="pokemon.name"
-        class="absolute -top-5 max-w-24 ml-1"
+        class="absolute -top-5 max-w-[6.5rem] ml-1"
       />
     </div>
   </div>
 
-  <div class="flex-1 flex items-center justify-center text-center py-2">
-    <span class="font-bold text-[#424242]">{{ pokemon.name }}</span>
+  <div class="flex-1 p-2 flex flex-col justify-between">
+    <div class="flex items-center justify-between text-center">
+      <span class="text-gray-300">#0{{ pokemon.status.id }}</span>
+      <img src="assets/pokeball-gray.svg" alt="" />
+    </div>
+    <span class="font-bold text-[#424242] uppercase">{{ pokemon.name }}</span>
+    <div class="flex items-center justify-between gap-1">
+      <span
+        class="py-1 px-3 rounded-2xl text-white"
+        [ngStyle]="{ 'background-color': getTypeData(pokemonType.type.name) }"
+        *ngFor="let pokemonType of pokemon.status.types"
+        >{{ pokemonType.type.name }}</span
+      >
+    </div>
   </div>
 </div>
 
