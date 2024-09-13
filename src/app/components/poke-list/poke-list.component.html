@@ -1,9 +1,6 @@
-<div>
-  <h1>Pokémons</h1>
-  <div *ngIf="pokemons" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-    <app-card
-      *ngFor="let pokemon of pokemons.results"
-      [pokemon]="pokemon"
-    ></app-card>
-  </div>
+<div
+  *ngIf="pokemons"
+  class="grid grid-cols-2 md:grid-cols-4 gap-8 py-8 items-center justify-items-center"
+>
+  <app-card *ngFor="let pokemon of pokemons" [pokemon]="pokemon"></app-card>
 </div>
