@@ -6,5 +6,5 @@
   *ngIf="!isLoading && pokemons"
   class="grid grid-cols-2 xl:grid-cols-3 gap-8 py-8 items-center justify-items-center"
 >
-  <app-card *ngFor="let pokemon of pokemons" [pokemon]="pokemon"></app-card>
+  <app-card *ngFor="let pokemon of filteredPokemons" [pokemon]="pokemon"></app-card>
 </div>
