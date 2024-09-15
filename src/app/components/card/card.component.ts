@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { POKEMON_TYPES } from '../../models/pokemon-types';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-card', // Define o seletor HTML para o componente
   standalone: true, // Componente standalone, pode ser utilizado sem um módulo específico
-  imports: [CommonModule], // Não há módulos sendo importados aqui
+  imports: [CommonModule, RouterModule], // Não há módulos sendo importados aqui
   templateUrl: './card.component.html', // Caminho para o template HTML
   styleUrls: ['./card.component.scss'], // Caminho para o arquivo de estilos (corrigido de styleUrl para styleUrls)
 })

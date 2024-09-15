@@ -1,4 +1,6 @@
-<div
+<a
+  [routerLink]="['details', pokemon.status.id]"
+  *ngIf="pokemon.status"
   class="flex gap-2 w-[310px] h-[120px] bg-white shadow-md rounded-[20px] cursor-pointer border-2 border-transparent hover:border-[#EF3E33] box-border hover:-translate-y-1 hover:transition-all hover:duration-200"
 >
   <div
@@ -43,7 +45,6 @@
         'bg-poison': pokemon.status.types[0].type.name === 'poison',
         'bg-ground': pokemon.status.types[0].type.name === 'ground',
         'bg-steel': pokemon.status.types[0].type.name === 'ground'
-
       }"
       class="w-[122px] h-[83px] rounded-[20px_0px_40px_0px] bg-opacity-50"
     >
@@ -80,6 +81,6 @@
       </div>
     </div>
   </div>
-</div>
+</a>
 
 <!-- [src] isso serve para fazer o binding dinamicamente com a variavel pokemon -->
