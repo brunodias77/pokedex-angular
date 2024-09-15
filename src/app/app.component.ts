@@ -77,7 +77,7 @@ export class AppComponent {
     {
       title: 'Aço',
       url: '/about',
-      icon: 'assets/icons/blue/seel_blue.svg',
+      icon: 'assets/icons/blue/steel_blue.svg',
     },
     {
       title: 'Pedra',

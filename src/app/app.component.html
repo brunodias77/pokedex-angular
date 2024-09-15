@@ -1,14 +1,17 @@
 <main class="flex">
   <aside
-    class="flex flex-col items-center gap-4 px-4 w-64 h-screen bg-[#FFFFFF] text-[#334D6E] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded-tr-3xl rounded-br-3xl"
+    class="flex flex-col items-center gap-4 px-4 w-64 h-full bg-[#FFFFFF] text-[#334D6E] shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] rounded-tr-3xl rounded-br-3xl"
   >
     <a href="/">
       <img src="assets/d-pokedex-logo.svg" alt="" class="h-20 w-20" />
     </a>
     <nav class="mt-4">
-      <ul class="flex flex-col justify-center items-center gap-1">
-        <li *ngFor="let navigation of navigations">
-          <a class="flex items-center  gap-3">
+      <ul class="flex flex-col justify-center items-center gap-2">
+        <li
+          *ngFor="let navigation of navigations"
+          class="w-full hover:text-white hover:bg-red-300 cursor-pointer p-2 rounded-3xl bg-opacity-30"
+        >
+          <a class="flex items-between justify-between gap-3">
             <img [src]="navigation.icon" alt="" class="h-5 w-5" />
             <span class="">{{ navigation.title }}</span>
           </a>
