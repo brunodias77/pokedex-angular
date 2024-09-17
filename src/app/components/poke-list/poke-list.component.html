@@ -11,3 +11,23 @@
     [pokemon]="pokemon"
   ></app-card>
 </div>
+
+<!-- Botões de navegação para paginação -->
+<div class="flex justify-between mt-8">
+  <button (click)="prevPage()" [disabled]="offset === 0">Anterior</button>
+  <button (click)="nextPage()">Próximo</button>
+</div>
+
+<!-- <div *ngIf="isLoading" class="flex justify-center items-center h-full">
+  <div class="loader"></div>
+</div>
+
+<div
+  *ngIf="!isLoading && pokemons"
+  class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 py-8 items-center justify-items-center"
+>
+  <app-card
+    *ngFor="let pokemon of filteredPokemons"
+    [pokemon]="pokemon"
+  ></app-card>
+</div> -->
