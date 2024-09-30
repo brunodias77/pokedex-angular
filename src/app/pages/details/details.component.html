@@ -19,8 +19,48 @@
     'bg-ground': pokemonType === 'ground',
     'bg-steel': pokemonType === 'steel'
   }"
-  class="h-full w-full"
+  class="h-full w-full p-10 bg-opacity-70"
 >
-  <span class="text-[150px] font-bold text-gray-500">{{ pokemonName }}</span>
-  <img [src]="pokemonImg" [alt]="pokemon.name" />
+  <div class="flex items-center justify-between mx-10">
+    <div class="flex flex-col items-center justify-between text-white">
+      <span class="text-xl">#0{{ pokemon[0].id }}</span>
+      <span class="text-3xl">{{ pokemon[0].name | uppercase }}</span>
+    </div>
+    <img src="assets/pokeball-white.svg" alt="" class="h-10 w-10" />
+  </div>
+
+  <div
+    [ngClass]="{
+      'text-fire': pokemonType === 'fire',
+      'text-water': pokemonType === 'water',
+      'text-dragon': pokemonType === 'dragon',
+      'text-electric': pokemonType === 'electric',
+      'text-fairy': pokemonType === 'fairy',
+      'text-ghost': pokemonType === 'ghost',
+      'text-ice': pokemonType === 'ice',
+      'text-grass': pokemonType === 'grass',
+      'text-bug': pokemonType === 'bug',
+      'text-fighting': pokemonType === 'fighting',
+      'text-normal': pokemonType === 'normal',
+      'text-dark': pokemonType === 'dark',
+      'text-rock': pokemonType === 'rock',
+      'text-psychic': pokemonType === 'psychic',
+      'text-flying': pokemonType === 'flying',
+      'text-poison': pokemonType === 'poison',
+      'text-ground': pokemonType === 'ground',
+      'text-steel': pokemonType === 'steel',
+      
+    }"
+    class="relative flex items-center justify-center gap-3 text-[2rem] text-white font-bold"
+  >
+    <span class="text-[100px] font-bold">{{ pokemonName }}</span>
+    <img
+      class="absolute z-30 h-64 w-64 -bottom-32"
+      [src]="pokemonImg"
+      [alt]="pokemon.name"
+    />
+  </div>
+  <div class="w-full bg-white mt-32 rounded-[100px] h-[500px] p-16">
+    detalhes
+  </div>
 </div>
