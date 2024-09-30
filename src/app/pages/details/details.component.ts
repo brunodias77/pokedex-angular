@@ -23,6 +23,9 @@ export class DetailsComponent implements OnInit {
   public isLoading: boolean = false;
   // Indicador de erro na chamada da API.
   public apiError: boolean = false;
+  public pokemonType: string = '';
+  public pokemonName: string = '';
+  public pokemonImg: string = '';
 
   constructor(
     private activeRoute: ActivatedRoute, // Injeta o serviço ActivatedRoute para obter parâmetros da rota.
@@ -54,7 +57,16 @@ export class DetailsComponent implements OnInit {
         console.log('Estou no details com os dados: ', res); // Exibe os resultados no console.
         this.pokemon = res; // Armazena os dados recebidos no atributo 'pokemon'.
         this.isLoading = true; // Marca que o carregamento terminou.
+        this.pokemonType = res[0].types[0].type.name;
+        this.pokemonName = res[1].genera[8].genus;
+        this.pokemonImg =
+          res[0].sprites.other['official-artwork'].front_default;
+        console.log('Tipo do pokemon: ', this.pokemonType);
         console.log(pokemon);
+        console.log('Nome em japones');
+        console.log(this.pokemonName);
+        console.log('Imagem do pokemon');
+        console.log(this.pokemonImg);
       },
       // Caso ocorra algum erro nas chamadas.
       error: () => {
