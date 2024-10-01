@@ -26,6 +26,11 @@ export class DetailsComponent implements OnInit {
   public pokemonType: string = '';
   public pokemonName: string = '';
   public pokemonImg: string = '';
+  public abilities: [] = [];
+  public height: number = 0;
+  public weight: number = 0;
+  public pokemonStats: [] = [];
+  public pokemonBio: string = '';
 
   constructor(
     private activeRoute: ActivatedRoute, // Injeta o serviço ActivatedRoute para obter parâmetros da rota.
@@ -61,12 +66,27 @@ export class DetailsComponent implements OnInit {
         this.pokemonName = res[1].genera[8].genus;
         this.pokemonImg =
           res[0].sprites.other['official-artwork'].front_default;
+        this.abilities = res[0].abilities;
+        this.height = res[0].height;
+        this.weight = res[0].weight;
+        this.pokemonStats = res[0].stats;
+        this.pokemonBio = res[1].flavor_text_entries[0].flavor_text;
         console.log('Tipo do pokemon: ', this.pokemonType);
         console.log(pokemon);
         console.log('Nome em japones');
         console.log(this.pokemonName);
         console.log('Imagem do pokemon');
         console.log(this.pokemonImg);
+        console.log('Habilidades do pokemon');
+        console.log(this.abilities);
+        console.log('Altura do pokemon');
+        console.log(this.height);
+        console.log('Peso do pokemon');
+        console.log(this.weight);
+        console.log('Status do pokemon');
+        console.log(this.pokemonStats);
+        console.log('Biografia do pokemon');
+        console.log(this.pokemonBio);
       },
       // Caso ocorra algum erro nas chamadas.
       error: () => {
