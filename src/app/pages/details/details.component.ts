@@ -3,6 +3,13 @@ import { ActivatedRoute, RouterLink } from '@angular/router'; // Importa Activat
 import { PokeApiService } from '../../services/poke-api.service'; // Serviço personalizado para acessar a API da PokeAPI.
 import { forkJoin } from 'rxjs'; // Combina múltiplas chamadas assíncronas em uma única operação.
 import { CommonModule } from '@angular/common'; // Importa CommonModule para funcionalidades comuns do Angular, como diretivas.
+import { POKEMON_TYPES } from '../../models/pokemon-types';
+
+interface PokemonType {
+  type: {
+    name: string;
+  };
+}
 
 @Component({
   selector: 'app-details', // Define o seletor do componente.
@@ -31,6 +38,7 @@ export class DetailsComponent implements OnInit {
   public weight: number = 0;
   public pokemonStats: [] = [];
   public pokemonBio: string = '';
+  public pokemonTypes: PokemonType[] = [];
 
   constructor(
     private activeRoute: ActivatedRoute, // Injeta o serviço ActivatedRoute para obter parâmetros da rota.
@@ -70,7 +78,8 @@ export class DetailsComponent implements OnInit {
         this.height = res[0].height;
         this.weight = res[0].weight;
         this.pokemonStats = res[0].stats;
-        this.pokemonBio = res[1].flavor_text_entries[0].flavor_text;
+        this.pokemonBio = res[1].flavor_text_entries[3].flavor_text;
+        this.pokemonTypes = res[0].types;
         console.log('Tipo do pokemon: ', this.pokemonType);
         console.log(pokemon);
         console.log('Nome em japones');
@@ -87,11 +96,17 @@ export class DetailsComponent implements OnInit {
         console.log(this.pokemonStats);
         console.log('Biografia do pokemon');
         console.log(this.pokemonBio);
+        console.log('Tipos do pokemon');
+        console.log(this.pokemonTypes);
       },
       // Caso ocorra algum erro nas chamadas.
       error: () => {
         this.apiError = true; // Define que ocorreu um erro ao chamar a API.
       },
     });
+  }
+  getColorForType(type: string): string {
+    const typeData = POKEMON_TYPES.find((t) => t.type === type);
+    return typeData ? typeData.data.color : '#000'; // Cor padrão se não encontrado
   }
 }

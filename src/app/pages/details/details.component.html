@@ -60,11 +60,36 @@
       [alt]="pokemon.name"
     />
   </div>
-  <div class="w-full bg-white mt-32 rounded-[100px] h-[500px] p-16">
-    detalhes
-
-    <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-      <div class="bg-blue-600 h-2.5 rounded-full" style="width: 50%"></div>
+  <div
+    class="w-full flex flex-col items-center justify-center gap-4 bg-white mt-32 rounded-[100px] h-[500px] p-16"
+  >
+    <span>{{ pokemonBio }}</span>
+    <div class="grid grid-cols-1 md:grid-cols-2 h-full w-full">
+      <div class="flex flex-col items-center justify-center">
+        <div class="flex gap-2">
+          <div
+            *ngFor="let pokemonType of pokemonTypes"
+            class="flex items-center justify-center gap-1 py-1 px-3 rounded-2xl text-white"
+            [ngStyle]="{
+              'background-color': getColorForType(pokemonType.type.name)
+            }"
+          >
+            <img
+              [src]="'assets/icons/' + pokemonType.type.name + '.svg'"
+              [alt]="pokemonType.type.name"
+              class="w-4 h-4"
+            />
+            <span>{{ pokemonType.type.name }}</span>
+          </div>
+        </div>
+        <span>{{ height }}</span>
+        <span>{{ weight }}</span>
+      </div>
+      <div class="">
+        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+          <div class="bg-blue-600 h-2.5 rounded-full" style="width: 50%"></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
