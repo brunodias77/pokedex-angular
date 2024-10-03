@@ -11,6 +11,12 @@ interface PokemonType {
   };
 }
 
+interface Ability {
+  ability: {
+    name: string;
+  };
+}
+
 @Component({
   selector: 'app-details', // Define o seletor do componente.
   standalone: true, // Torna o componente independente, não requer um módulo pai.
@@ -39,6 +45,7 @@ export class DetailsComponent implements OnInit {
   public pokemonStats: [] = [];
   public pokemonBio: string = '';
   public pokemonTypes: PokemonType[] = [];
+  public pokemonHabilities: Ability[] = [];
 
   constructor(
     private activeRoute: ActivatedRoute, // Injeta o serviço ActivatedRoute para obter parâmetros da rota.
@@ -80,6 +87,7 @@ export class DetailsComponent implements OnInit {
         this.pokemonStats = res[0].stats;
         this.pokemonBio = res[1].flavor_text_entries[3].flavor_text;
         this.pokemonTypes = res[0].types;
+        this.pokemonHabilities = res[0].abilities;
         console.log('Tipo do pokemon: ', this.pokemonType);
         console.log(pokemon);
         console.log('Nome em japones');
@@ -98,6 +106,8 @@ export class DetailsComponent implements OnInit {
         console.log(this.pokemonBio);
         console.log('Tipos do pokemon');
         console.log(this.pokemonTypes);
+        console.log('Habilidades do pokemon');
+        console.log(this.pokemonHabilities);
       },
       // Caso ocorra algum erro nas chamadas.
       error: () => {

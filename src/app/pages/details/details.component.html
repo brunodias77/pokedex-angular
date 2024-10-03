@@ -84,6 +84,9 @@
         </div>
         <span>{{ height }}</span>
         <span>{{ weight }}</span>
+        <div *ngFor="let skills of pokemonHabilities">
+          <span>{{ skills.ability.name }}</span>
+        </div>
       </div>
       <div class="">
         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
