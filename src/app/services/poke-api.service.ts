@@ -1,12 +1,26 @@
 import { Injectable } from '@angular/core'; // Fornece o decorator Injectable para permitir a injeção de dependências
 import { HttpClient } from '@angular/common/http'; // Serviço HTTP para realizar requisições HTTP
-import { map, Observable, tap } from 'rxjs'; // Operadores do RxJS para manipular fluxos de dados assíncronos
+import {
+  catchError,
+  forkJoin,
+  map,
+  Observable,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs'; // Operadores do RxJS para manipular fluxos de dados assíncronos
+
+interface PokemonEvolutionsProps {
+  name: string;
+  url: string;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class PokeApiService {
   private apiUrl: string = 'https://pokeapi.co/api/v2/pokemon';
+  private pokemonEvolutionList: PokemonEvolutionsProps[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -28,46 +42,43 @@ export class PokeApiService {
   public apiGetPokemon(url: string): Observable<any> {
     return this.http.get<any>(url);
   }
+
+  public getPokemonEvolutions(
+    evolutionUrl: string
+  ): Observable<PokemonEvolutionsProps[]> {
+    console.log('executando getPokemonEvolutions');
+
+    return this.http.get<any>(evolutionUrl).pipe(
+      switchMap((data) => {
+        const evolutionRequests = [
+          this.apiGetPokemon(`${this.apiUrl}/${data.chain.species.name}`),
+          this.apiGetPokemon(
+            `${this.apiUrl}/${data.chain.evolves_to[0]?.species.name || ''}`
+          ),
+          this.apiGetPokemon(
+            `${this.apiUrl}/${
+              data.chain.evolves_to[0]?.evolves_to[0]?.species.name || ''
+            }`
+          ),
+        ];
+
+        return forkJoin(evolutionRequests); // Retorna um Observable que emite um array com os resultados das requisições
+      }),
+      map((results) => {
+        this.pokemonEvolutionList = results.map((res) => {
+          const image =
+            res.sprites?.other?.['official-artwork']?.front_default || ''; // Verifica se as propriedades existem
+          return {
+            name: res.name,
+            url: image,
+          };
+        });
+        return this.pokemonEvolutionList; // Retorna a lista de evoluções
+      }),
+      catchError((error) => {
+        console.error('Erro ao buscar dados:', error);
+        return of([]); // Retorna um array vazio em caso de erro
+      })
+    );
+  }
 }
-
-// // Importações necessárias para o serviço
-// import { Injectable } from '@angular/core'; // Fornece o decorator Injectable para permitir a injeção de dependências
-// import { HttpClient } from '@angular/common/http'; // Serviço HTTP para realizar requisições HTTP
-// import { map, Observable, tap } from 'rxjs'; // Operadores do RxJS para manipular fluxos de dados assíncronos
-
-// // Define que o serviço pode ser injetado em toda a aplicação
-// @Injectable({
-//   providedIn: 'root',
-// })
-// export class PokeApiService {
-//   // URL base para a API de Pokémon com um limite de 6 pokémons
-//   private apiUrl: string =
-//     'https://pokeapi.co/api/v2/pokemon/?offset=0&limit=21';
-
-//   // Construtor que injeta o serviço HttpClient para realizar requisições HTTP
-//   constructor(private http: HttpClient) {}
-
-//   // Método getter que retorna um Observable contendo a lista de todos os pokémons
-//   get apiListAllPokemons(): Observable<any> {
-//     return this.http.get<any>(this.apiUrl).pipe(
-//       // O operador 'tap' permite executar uma ação com os dados recebidos sem alterá-los
-//       tap((res) => {
-//         // Itera sobre os resultados da lista de pokémons
-//         res.results.map((resPokemons: any) => {
-//           // Para cada Pokémon, faz uma requisição para obter mais detalhes
-//           this.apiGetPokemon(resPokemons.url).subscribe(
-//             (res) => (resPokemons.status = res) // Salva os detalhes do Pokémon no objeto original
-//           );
-//         });
-//       })
-//     );
-//   }
-
-//   // Método público que faz uma requisição HTTP para obter detalhes de um Pokémon específico
-//   public apiGetPokemon(url: string): Observable<any> {
-//     return this.http.get<any>(url).pipe(
-//       // O operador 'map' transforma a resposta e a retorna
-//       map((res) => res)
-//     );
-//   }
-// }

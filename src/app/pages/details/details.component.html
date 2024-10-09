@@ -23,8 +23,8 @@
 >
   <div class="flex items-center justify-between mx-10">
     <div class="flex flex-col items-center justify-between text-white">
-      <span class="text-xl">#0{{ pokemon[0].id }}</span>
-      <span class="text-3xl">{{ pokemon[0].name | uppercase }}</span>
+      <span class="text-xl">#0{{ pokemon?.pokemon.id }}</span>
+      <span class="text-3xl">{{ pokemon?.pokemon.name | uppercase }}</span>
     </div>
     <img src="assets/pokeball-white.svg" alt="" class="h-10 w-10" />
   </div>
@@ -57,11 +57,11 @@
     <img
       class="absolute z-30 h-64 w-64 -bottom-32"
       [src]="pokemonImg"
-      [alt]="pokemon.name"
+      [alt]="pokemon?.pokemon[0]?.name"
     />
   </div>
   <div
-    class="w-full flex flex-col items-center justify-center gap-4 bg-white mt-32 rounded-[100px] h-[500px] p-16"
+    class="w-[80%] mx-auto flex flex-col items-center justify-center gap-4 bg-white mt-32 rounded-[100px] h-[500px] p-16"
   >
     <span>{{ pokemonBio }}</span>
     <div class="grid grid-cols-1 md:grid-cols-2 h-full w-full">
@@ -88,10 +88,24 @@
           <span>{{ skills.ability.name }}</span>
         </div>
       </div>
-      <div class="">
+
+      <div id="Skills" class="">
         <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
           <div class="bg-blue-600 h-2.5 rounded-full" style="width: 50%"></div>
         </div>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-center gap-10">
+      <div *ngFor="let evolution of pokemonEvolutions; let i = index">
+        <div
+          class="bg-gray-100 h-[100px] w-[100px] p-4 rounded-xl flex flex-col items-center justify-center shadow"
+        >
+          <img [src]="evolution.url" alt="" />
+          <span>{{ evolution.name }}</span>
+        </div>
+
+        <!-- <span *ngIf="i != pokemonEvolutions.length - 1">-></span> -->
       </div>
     </div>
   </div>

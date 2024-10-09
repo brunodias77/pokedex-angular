@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router'; // Importa ActivatedRoute para acessar parâmetros da rota e RouterLink para navegação.
-import { PokeApiService } from '../../services/poke-api.service'; // Serviço personalizado para acessar a API da PokeAPI.
-import { forkJoin } from 'rxjs'; // Combina múltiplas chamadas assíncronas em uma única operação.
-import { CommonModule } from '@angular/common'; // Importa CommonModule para funcionalidades comuns do Angular, como diretivas.
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { PokeApiService } from '../../services/poke-api.service';
+import { forkJoin } from 'rxjs';
+import { CommonModule } from '@angular/common';
 import { POKEMON_TYPES } from '../../models/pokemon-types';
+import { CardEvolutionComponent } from "../../components/card-evolution/card-evolution.component";
 
 interface PokemonType {
   type: {
@@ -17,106 +18,165 @@ interface Ability {
   };
 }
 
+interface PokemonDetails {
+  pokemon: any; // Pode ser melhorado com um tipo específico.
+  species: any; // Pode ser melhorado com um tipo específico.
+}
+
 @Component({
-  selector: 'app-details', // Define o seletor do componente.
-  standalone: true, // Torna o componente independente, não requer um módulo pai.
-  imports: [RouterLink, CommonModule], // Especifica os módulos que o componente importa.
-  templateUrl: './details.component.html', // Template HTML do componente.
-  styleUrl: './details.component.scss', // Arquivo de estilos do componente.
+  selector: 'app-details',
+  standalone: true,
+  imports: [RouterLink, CommonModule, CardEvolutionComponent],
+  templateUrl: './details.component.html',
+  styleUrls: ['./details.component.scss'], // Corrigido para 'styleUrls'.
 })
 export class DetailsComponent implements OnInit {
-  // URL base da API para buscar detalhes do Pokémon.
-  private urlPokemon: string = 'https://pokeapi.co/api/v2/pokemon';
-  // URL base da API para buscar informações sobre a espécie do Pokémon.
-  private urlName: string = 'https://pokeapi.co/api/v2/pokemon-species';
+  private readonly urlPokemon = 'https://pokeapi.co/api/v2/pokemon';
+  private readonly urlName = 'https://pokeapi.co/api/v2/pokemon-species';
 
-  // Armazena os dados do Pokémon.
-  public pokemon: any;
-  // Indicador de carregamento dos dados.
-  public isLoading: boolean = false;
-  // Indicador de erro na chamada da API.
-  public apiError: boolean = false;
-  public pokemonType: string = '';
-  public pokemonName: string = '';
-  public pokemonImg: string = '';
-  public abilities: [] = [];
-  public height: number = 0;
-  public weight: number = 0;
-  public pokemonStats: [] = [];
-  public pokemonBio: string = '';
+  public pokemon: PokemonDetails | null = null;
+  public isLoading = false;
+  public apiError = false;
+  public pokemonType = '';
+  public pokemonName = '';
+  public pokemonImg = '';
+  public abilities: Ability[] = [];
+  public height = 0;
+  public weight = 0;
+  public pokemonStats: any[] = []; // Melhore com um tipo específico
+  public pokemonBio = '';
   public pokemonTypes: PokemonType[] = [];
   public pokemonHabilities: Ability[] = [];
+  public pokemonEvolutions: any[] = [];
 
   constructor(
-    private activeRoute: ActivatedRoute, // Injeta o serviço ActivatedRoute para obter parâmetros da rota.
-    private pokeApiService: PokeApiService // Injeta o serviço PokeApiService para chamadas à API.
+    private activeRoute: ActivatedRoute,
+    private pokeApiService: PokeApiService
   ) {}
 
   ngOnInit(): void {
-    // Chama o método getPokemon ao inicializar o componente.
-    this.getPokemon;
+    this.getPokemon();
   }
 
-  // Getter que realiza chamadas à API para obter os detalhes do Pokémon e sua espécie.
-  get getPokemon() {
-    // Obtém o parâmetro 'id' da rota ativa (o ID do Pokémon).
+  private getPokemon(): void {
     const id = this.activeRoute.snapshot.params['id'];
 
-    // Faz a chamada à API para obter detalhes do Pokémon.
-    const pokemon = this.pokeApiService.apiGetPokemon(
+    const pokemonRequest = this.pokeApiService.apiGetPokemon(
       `${this.urlPokemon}/${id}`
     );
+    const speciesRequest = this.pokeApiService.apiGetPokemon(
+      `${this.urlName}/${id}`
+    );
 
-    // Faz a chamada à API para obter detalhes da espécie do Pokémon.
-    const name = this.pokeApiService.apiGetPokemon(`${this.urlName}/${id}`);
-
-    // Usa forkJoin para executar ambas as chamadas de API ao mesmo tempo e aguardar que todas terminem.
-    return forkJoin([pokemon, name]).subscribe({
-      // Caso as chamadas sejam bem-sucedidas.
-      next: (res) => {
-        console.log('Estou no details com os dados: ', res); // Exibe os resultados no console.
-        this.pokemon = res; // Armazena os dados recebidos no atributo 'pokemon'.
-        this.isLoading = true; // Marca que o carregamento terminou.
-        this.pokemonType = res[0].types[0].type.name;
-        this.pokemonName = res[1].genera[8].genus;
-        this.pokemonImg =
-          res[0].sprites.other['official-artwork'].front_default;
-        this.abilities = res[0].abilities;
-        this.height = res[0].height;
-        this.weight = res[0].weight;
-        this.pokemonStats = res[0].stats;
-        this.pokemonBio = res[1].flavor_text_entries[3].flavor_text;
-        this.pokemonTypes = res[0].types;
-        this.pokemonHabilities = res[0].abilities;
-        console.log('Tipo do pokemon: ', this.pokemonType);
-        console.log(pokemon);
-        console.log('Nome em japones');
-        console.log(this.pokemonName);
-        console.log('Imagem do pokemon');
-        console.log(this.pokemonImg);
-        console.log('Habilidades do pokemon');
-        console.log(this.abilities);
-        console.log('Altura do pokemon');
-        console.log(this.height);
-        console.log('Peso do pokemon');
-        console.log(this.weight);
-        console.log('Status do pokemon');
-        console.log(this.pokemonStats);
-        console.log('Biografia do pokemon');
-        console.log(this.pokemonBio);
-        console.log('Tipos do pokemon');
-        console.log(this.pokemonTypes);
-        console.log('Habilidades do pokemon');
-        console.log(this.pokemonHabilities);
-      },
-      // Caso ocorra algum erro nas chamadas.
-      error: () => {
-        this.apiError = true; // Define que ocorreu um erro ao chamar a API.
-      },
+    forkJoin([pokemonRequest, speciesRequest]).subscribe({
+      next: (res) => this.handlePokemonResponse(res),
+      error: () => (this.apiError = true),
     });
   }
-  getColorForType(type: string): string {
+
+  private handlePokemonResponse([pokemonData, speciesData]: [any, any]): void {
+    this.pokemon = { pokemon: pokemonData, species: speciesData };
+    this.isLoading = true;
+    console.log('Detalhes pokemon');
+    console.log(this.pokemon);
+    console.log(this.pokemon.species.evolution_chain.url);
+
+    this.pokemonType = pokemonData.types[0].type.name;
+    this.pokemonName = speciesData.genera[8].genus;
+    this.pokemonImg =
+      pokemonData.sprites.other['official-artwork'].front_default;
+    this.abilities = pokemonData.abilities;
+    this.height = pokemonData.height;
+    this.weight = pokemonData.weight;
+    this.pokemonStats = pokemonData.stats;
+    this.pokemonBio = speciesData.flavor_text_entries[3].flavor_text;
+    this.pokemonTypes = pokemonData.types;
+    this.pokemonHabilities = pokemonData.abilities;
+
+    this.logPokemonDetails();
+
+    // Obtenha as evoluções do Pokémon
+    this.pokeApiService
+      .getPokemonEvolutions(this.pokemon.species.evolution_chain.url)
+      .subscribe({
+        next: (evolutions) => {
+          this.pokemonEvolutions = evolutions;
+          console.log('Evoluções do Pokémon no details_component:', this.pokemonEvolutions);
+        },
+        error: () => {
+          console.error('Erro ao obter evoluções do Pokémon');
+          this.pokemonEvolutions = []; // Inicializa como array vazio em caso de erro
+        },
+      });
+  }
+
+  private logPokemonDetails(): void {
+    console.log('Detalhes do Pokémon:', {
+      tipo: this.pokemonType,
+      nome: this.pokemonName,
+      imagem: this.pokemonImg,
+      habilidades: this.abilities,
+      altura: this.height,
+      peso: this.weight,
+      status: this.pokemonStats,
+      biografia: this.pokemonBio,
+      tipos: this.pokemonTypes,
+      habilidadesPokemon: this.pokemonHabilities,
+    });
+  }
+
+  public getColorForType(type: string): string {
     const typeData = POKEMON_TYPES.find((t) => t.type === type);
-    return typeData ? typeData.data.color : '#000'; // Cor padrão se não encontrado
+    return typeData ? typeData.data.color : '#000';
+  }
+
+  getBackgroundClass(type: string): string | boolean {
+    return (
+      {
+        'bg-fire': type === 'fire',
+        'bg-water': type === 'water',
+        'bg-dragon': type === 'dragon',
+        'bg-electric': type === 'electric',
+        'bg-fairy': type === 'fairy',
+        'bg-ghost': type === 'ghost',
+        'bg-ice': type === 'ice',
+        'bg-grass': type === 'grass',
+        'bg-bug': type === 'bug',
+        'bg-fighting': type === 'fighting',
+        'bg-normal': type === 'normal',
+        'bg-dark': type === 'dark',
+        'bg-rock': type === 'rock',
+        'bg-psychic': type === 'psychic',
+        'bg-flying': type === 'flying',
+        'bg-poison': type === 'poison',
+        'bg-ground': type === 'ground',
+        'bg-steel': type === 'steel',
+      }[type] || ''
+    ); // Retorna uma string vazia se não encontrar
+  }
+
+  getTextClass(type: string): string | boolean {
+    return (
+      {
+        'text-fire': type === 'fire',
+        'text-water': type === 'water',
+        'text-dragon': type === 'dragon',
+        'text-electric': type === 'electric',
+        'text-fairy': type === 'fairy',
+        'text-ghost': type === 'ghost',
+        'text-ice': type === 'ice',
+        'text-grass': type === 'grass',
+        'text-bug': type === 'bug',
+        'text-fighting': type === 'fighting',
+        'text-normal': type === 'normal',
+        'text-dark': type === 'dark',
+        'text-rock': type === 'rock',
+        'text-psychic': type === 'psychic',
+        'text-flying': type === 'flying',
+        'text-poison': type === 'poison',
+        'text-ground': type === 'ground',
+        'text-steel': type === 'steel',
+      }[type] || ''
+    ); // Retorna uma string vazia se não encontrar
   }
 }
